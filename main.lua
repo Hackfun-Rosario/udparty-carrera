@@ -43,6 +43,7 @@ function love.load(filtered_args, args)
 end
 
 function love.update(dt)
+    -- print(love.timer.getFPS())
     while true do
         local data = udp:receivefrom()
 
