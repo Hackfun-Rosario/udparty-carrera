@@ -1,6 +1,5 @@
 Car = Class {}
-
--- CAR_SPEED = 100
+local utils = require "utils/utils"
 
 function Car:init()
     self.sprite = love.graphics.newImage("assets/auto.png")
@@ -9,7 +8,6 @@ function Car:init()
     self.x = (love.graphics.getWidth() / 2) - (self.width / 2)
     self.y = (love.graphics.getHeight() / 2) - (self.height / 2)
 
-    self.speed = 0 --CAR_SPEED
     self.dx = 0
     self.dy = 0
 end
@@ -18,7 +16,7 @@ function Car:collides()
     return false
 end
 
-function Car:update(dt)
+function Car:update(dt, data)
     if self.dy < 0 then
         self.y = math.max(0, self.y + self.dy * dt)
     else
@@ -30,22 +28,68 @@ function Car:update(dt)
     else
         self.x = math.min(love.graphics.getWidth() - self.width, self.x + self.dx * dt)
     end
+
+    local msgParams = utils.split(data, ',')
+
+    dx = tonumber(msgParams[2]) or 0
+    dy = tonumber(msgParams[3]) or 0
+
+    if dx > 75 then
+        car:moveRight(70)
+    elseif dx > 65 then
+        car:moveRight(40)
+    elseif dx > 45 then
+        car:moveRight(20)
+    elseif dx > 25 then
+        car:moveRight(10)
+    elseif dx < -75 then
+        car:moveLeft(70)
+    elseif dx < -65 then
+        car:moveLeft(40)
+    elseif dx < -45 then
+        car:moveLeft(20)
+    elseif dx < -25 then
+        car:moveLeft(10)
+    else
+        car:stopHorizontal()
+    end
+
+
+    if dy > 75 then
+        car:moveDown(100)
+    elseif dy > 55 then
+        car:moveDown(50)
+    elseif dy > 35 then
+        car:moveDown(20)
+    elseif dy > 15 then
+        car:moveDown(10)
+    elseif dy < -75 then
+        car:moveUp(100)
+    elseif dy < -55 then
+        car:moveUp(50)
+    elseif dy < -35 then
+        car:moveUp(20)
+    elseif dy < -15 then
+        car:moveUp(10)
+    else
+        car:stopVertical()
+    end
 end
 
 function Car:moveUp(speed)
-    self.dy = -speed -- -CAR_SPEED
+    self.dy = -speed
 end
 
 function Car:moveDown(speed)
-    self.dy = speed -- CAR_SPEED
+    self.dy = speed
 end
 
 function Car:moveLeft(speed)
-    self.dx = -speed -- -CAR_SPEED
+    self.dx = -speed
 end
 
 function Car:moveRight(speed)
-    self.dx = speed -- CAR_SPEED
+    self.dx = speed
 end
 
 function Car:stopVertical()
@@ -57,6 +101,5 @@ function Car:stopHorizontal()
 end
 
 function Car:draw()
-    -- love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
     love.graphics.draw(self.sprite, self.x, self.y)
 end
