@@ -6,7 +6,8 @@ Class = require 'class'
 require "entities/car"
 
 function love.load(filtered_args, args)
-    -- love.window.setFullscreen(true)
+    love.window.setFullscreen(true)
+    love.window.setVSync(0)
     tick.framerate = 60
 
     -- Leer configuración desde archivo
@@ -39,7 +40,9 @@ end
 function love.update(dt)
     -- print(love.timer.getFPS())
     while true do
-        local data = udp:receivefrom()
+        local data = udp:receive(20)
+
+        print(data)
 
         if data then
             car:update(dt, data)
@@ -59,6 +62,7 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
     if key == "q" then
+        udp:close()
         love.event.quit()
     end
 end

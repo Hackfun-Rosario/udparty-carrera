@@ -38,17 +38,17 @@ function Car:update(dt, data)
     dy = tonumber(msgParams[3]) or 0
 
     if dx > 75 then
-        car:moveRight(40)
+        car:moveRight(60)
     elseif dx > 65 then
-        car:moveRight(30)
+        car:moveRight(40)
     elseif dx > 45 then
         car:moveRight(20)
     elseif dx > 25 then
         car:moveRight(10)
     elseif dx < -75 then
-        car:moveLeft(40)
+        car:moveLeft(60)
     elseif dx < -65 then
-        car:moveLeft(30)
+        car:moveLeft(40)
     elseif dx < -45 then
         car:moveLeft(20)
     elseif dx < -25 then
