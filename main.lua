@@ -6,9 +6,10 @@ Class = require 'class'
 require "entities/car"
 
 function love.load(filtered_args, args)
-    love.window.setFullscreen(true)
-    love.window.setVSync(0)
-    tick.framerate = 60
+    -- love.window.setFullscreen(true)
+    love.window.setMode(1024,600)
+    love.window.setVSync(-1)
+    tick.framerate = 59
 
     -- Leer configuración desde archivo
     local success, config = pcall(require, "config")
@@ -42,7 +43,7 @@ function love.update(dt)
     while true do
         local data = udp:receive(20)
 
-        print(data)
+        -- print(data)
 
         if data then
             car:update(dt, data)

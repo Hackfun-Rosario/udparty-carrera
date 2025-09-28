@@ -29,50 +29,49 @@ function Car:update(dt, data)
         self.x = math.min(love.graphics.getWidth() - self.width, self.x + self.dx * dt)
     end
 
-    if data == nil then
-        return
+    if data ~= nil then
+        local msgParams = utils.split(data, ',')
+
+        self.dx = tonumber(msgParams[2]) or 0
+        self.dy = tonumber(msgParams[3]) or 0
     end
-    local msgParams = utils.split(data, ',')
 
-    dx = tonumber(msgParams[2]) or 0
-    dy = tonumber(msgParams[3]) or 0
-
-    if dx > 75 then
+    if self.dx > 75 then
         car:moveRight(60)
-    elseif dx > 65 then
+    elseif self.dx > 65 then
         car:moveRight(40)
-    elseif dx > 45 then
+    elseif self.dx > 45 then
         car:moveRight(20)
-    elseif dx > 25 then
+    elseif self.dx > 25 then
         car:moveRight(10)
-    elseif dx < -75 then
+    elseif self.dx < -75 then
         car:moveLeft(60)
-    elseif dx < -65 then
+    elseif self.dx < -65 then
         car:moveLeft(40)
-    elseif dx < -45 then
+    elseif self.dx < -45 then
         car:moveLeft(20)
-    elseif dx < -25 then
+    elseif self.dx < -25 then
         car:moveLeft(10)
     else
         car:stopHorizontal()
     end
 
 
-    if dy > 75 then
-        car:moveDown(70)
-    elseif dy > 55 then
+    if self.dy > 85 then
+        car:moveDown(80)
+    elseif self.dy > 55 then
         car:moveDown(40)
-    elseif dy > 35 then
+    elseif self.dy > 35 then
         car:moveDown(20)
-    elseif dy > 15 then
+    elseif self.dy > 15 then
         car:moveDown(10)
-    elseif dy < -75 then
-        car:moveUp(70)
-    elseif dy < -55 then
+    elseif self.dy < -85 then
+        car:moveUp(80)
+    elseif self.dy < -55 then
         car:moveUp(40)
-    elseif dy < -35 then
+    elseif self.dy < -35 then
         car:moveUp(20)
-    elseif dy < -15 then
+    elseif self.dy < -15 then
         car:moveUp(10)
     else
         car:stopVertical()
