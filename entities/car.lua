@@ -103,5 +103,6 @@ function Car:stopHorizontal()
 end
 
 function Car:draw()
+    love.graphics.setColor(1,1,1)
     love.graphics.draw(self.sprite, self.x, self.y)
 end

@@ -4,10 +4,11 @@ local udp
 
 Class = require 'class'
 require "entities/car"
+require "entities/line"
 
 function love.load(filtered_args, args)
     -- love.window.setFullscreen(true)
-    love.window.setMode(1024,600)
+    love.window.setMode(1024, 600)
     love.window.setVSync(-1)
     tick.framerate = 59
 
@@ -34,7 +35,7 @@ function love.load(filtered_args, args)
         print("Escuchando...")
     end
     udp:settimeout(0) -- para que no bloquee el hilo principal
-
+    listOfLines = {}
     car = Car()
 end
 
@@ -54,10 +55,36 @@ function love.update(dt)
     end
 
     car:update(dt, nil)
+
+    for k, v in pairs(listOfLines) do
+        v:update(dt)
+    end
+
+    timer(dt, 0.3)
+end
+
+function createLine()
+    local line = Line()
+    table.insert(listOfLines, line)
+    if #listOfLines > 8 then
+        table.remove(listOfLines, 1)
+    end
+end
+
+countdownTime = 0
+function timer(dt, secs)
+    countdownTime = countdownTime - dt
+    if countdownTime <= 0 then
+        createLine()
+        countdownTime = countdownTime + secs
+    end
 end
 
 function love.draw()
     love.graphics.setBackgroundColor(0.13, 0.13, 0.13)
+    for k, v in pairs(listOfLines) do
+        v:draw()
+    end
     car:draw()
 end
 
