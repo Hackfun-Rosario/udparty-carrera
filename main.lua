@@ -1,10 +1,9 @@
 local tick = require 'tick'
 local socket = require "socket"
 local udp
-local carrera = require("effects/carrera/carrera")
 
 Class = require 'class'
-require "effects/carrera/car"
+require "entities/car"
 
 function love.load(filtered_args, args)
     -- love.window.setFullscreen(true)
@@ -34,7 +33,7 @@ function love.load(filtered_args, args)
     end
     udp:settimeout(0) -- para que no bloquee el hilo principal
 
-    carrera.load()
+    car = Car()
 end
 
 function love.update(dt)
@@ -43,17 +42,19 @@ function love.update(dt)
         local data = udp:receivefrom()
 
         if data then
-            carrera.update(dt, data)
+            car:update(dt, data)
         else
             -- Salir del bucle si no hay más mensajes para no bloquear el thread
             break
         end
     end
-    carrera.update(dt, nil)
+
+    car:update(dt, nil)
 end
 
 function love.draw()
-    carrera.draw()
+    love.graphics.setBackgroundColor(0.13, 0.13, 0.13)
+    car:draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
