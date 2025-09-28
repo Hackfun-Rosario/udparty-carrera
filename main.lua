@@ -1,12 +1,8 @@
 local tick = require 'tick'
 local socket = require "socket"
 local udp
-
--- Efectos disponibles
-local standby = require("effects/standby/standby")
 local carrera = require("effects/carrera/carrera")
 
-local utils = require "utils/utils"
 Class = require 'class'
 require "effects/carrera/car"
 
@@ -20,7 +16,6 @@ function love.load(filtered_args, args)
         print("No se encontró el archivo config.lua:", config)
         config = {}
     end
-
     if config.port then
         print("Port from config:", config.port)
     else
@@ -43,7 +38,7 @@ function love.load(filtered_args, args)
 end
 
 function love.update(dt)
-    print(love.timer.getFPS())
+    -- print(love.timer.getFPS())
     while true do
         local data = udp:receivefrom()
 
