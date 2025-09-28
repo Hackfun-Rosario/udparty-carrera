@@ -1,9 +1,6 @@
--- LOVE receiver
--- Ejecutar: love .
+local tick = require 'tick'
 local socket = require "socket"
 local udp
-local currentEffect = "standby"
--- local utils = require "utils/utils"
 
 -- Efectos disponibles
 local standby = require("effects/standby/standby")
@@ -15,6 +12,7 @@ require "effects/carrera/car"
 
 function love.load(filtered_args, args)
     -- love.window.setFullscreen(true)
+    tick.framerate = 60
 
     -- Leer configuración desde archivo
     local success, config = pcall(require, "config")
@@ -41,8 +39,6 @@ function love.load(filtered_args, args)
     end
     udp:settimeout(0) -- para que no bloquee el hilo principal
 
-    -- Inicializar efectos
-    standby.load()
     carrera.load()
 end
 
@@ -51,38 +47,21 @@ function love.update(dt)
         local data = udp:receivefrom()
 
         if data then
-            print("Recibido: ", data)
-
-            local dataParams = utils.split(data, ',')
-            currentEffect = dataParams[1]
-
-            if currentEffect == 'standby' then
-                standby.update();
-            end
-            
-            if currentEffect == 'carrera' then
-                carrera.update(dt, data)
-            end
+            carrera.update(dt, data)
         else
             -- Salir del bucle si no hay más mensajes para no bloquear el thread
             break
         end
     end
+    carrera.update(dt, nil)
 end
 
 function love.draw()
-    if currentEffect == 'standby' then
-        standby.draw()
-    end
-
-    if currentEffect == 'carrera' then
-        carrera.draw()
-    end
-
+    carrera.draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
-   if key == "q" then
-      love.event.quit()
-   end
+    if key == "q" then
+        love.event.quit()
+    end
 end

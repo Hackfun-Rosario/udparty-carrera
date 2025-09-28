@@ -9,6 +9,9 @@ return {
     end,
 
     update = function(dt, data)
+        if data == nil then
+            return
+        end
         local msgParams = utils.split(data, ',')
 
         dx = tonumber(msgParams[2]) or 0
