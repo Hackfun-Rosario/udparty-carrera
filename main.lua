@@ -4,7 +4,6 @@ local udp
 
 Class = require 'class'
 require "entities/car"
--- require "entities/road/line"
 require "entities/road/road"
 
 function love.load(filtered_args, args)
@@ -36,13 +35,15 @@ function love.load(filtered_args, args)
         print("Escuchando...")
     end
     udp:settimeout(0) -- para que no bloquee el hilo principal
-    -- listOfLines = {}
+
+    -- Inicialización de objetos
     road = Road()
     car = Car()
 end
 
 function love.update(dt)
     -- print(love.timer.getFPS())
+
     while true do
         local data = udp:receive(20)
 
@@ -51,43 +52,18 @@ function love.update(dt)
         if data then
             car:update(dt, data)
         else
-            -- Salir del bucle si no hay más mensajes para no bloquear el thread
+            -- Salir del bucle para no bloquear el thread
             break
         end
     end
 
+    -- Actualizar objetos
     car:update(dt, nil)
     road:update(dt)
-
-    -- for k, v in pairs(listOfLines) do
-    --     v:update(dt)
-    -- end
-
-    -- timer(dt, 0.3)
 end
 
--- function createLine()
---     local line = Line()
---     table.insert(listOfLines, line)
---     if #listOfLines > 8 then
---         table.remove(listOfLines, 1)
---     end
--- end
-
--- countdownTime = 0
--- function timer(dt, secs)
---     countdownTime = countdownTime - dt
---     if countdownTime <= 0 then
---         createLine()
---         countdownTime = countdownTime + secs
---     end
--- end
-
 function love.draw()
-    love.graphics.setBackgroundColor(0.13, 0.13, 0.13)
-    -- for k, v in pairs(listOfLines) do
-    --     v:draw()
-    -- end
+    -- Dibujar objetos
     road:draw()
     car:draw()
 end

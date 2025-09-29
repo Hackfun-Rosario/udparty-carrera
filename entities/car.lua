@@ -12,10 +12,6 @@ function Car:init()
     self.dy = 0
 end
 
-function Car:collides()
-    return false
-end
-
 function Car:update(dt, data)
     if self.dy < 0 then
         self.y = math.max(0, self.y + self.dy * dt)
@@ -78,6 +74,11 @@ function Car:update(dt, data)
     end
 end
 
+function Car:draw()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(self.sprite, self.x, self.y)
+end
+
 function Car:moveUp(speed)
     self.dy = -speed
 end
@@ -102,7 +103,6 @@ function Car:stopHorizontal()
     self.dx = 0
 end
 
-function Car:draw()
-    love.graphics.setColor(1,1,1)
-    love.graphics.draw(self.sprite, self.x, self.y)
+function Car:collides()
+    return false
 end
