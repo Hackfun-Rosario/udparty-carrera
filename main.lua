@@ -58,8 +58,8 @@ function love.update(dt)
     end
 
     -- Actualizar objetos
-    car:update(dt, nil)
     road:update(dt)
+    car:update(dt, nil)
 end
 
 function love.draw()

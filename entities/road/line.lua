@@ -25,6 +25,6 @@ function Line:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 
-function Line:setSpeed(newSpeed)
-    self.speed = newSpeed
-end
+-- function Line:setSpeed(newSpeed)
+--     self.speed = newSpeed
+-- end
