@@ -73,4 +73,12 @@ function love.keypressed(key, scancode, isrepeat)
         udp:close()
         love.event.quit()
     end
+
+    if key == "down" then
+        road:curveRight("easy")
+    end
+
+    if key == "up" then
+        road:curveLeft("easy")
+    end
 end

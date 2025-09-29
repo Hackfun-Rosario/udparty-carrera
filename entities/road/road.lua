@@ -1,10 +1,17 @@
 Class = require 'class'
+local utils = require "utils/utils"
 require "entities/road/line"
 
 Road = Class {}
-countdownTime = 0
+
 
 function Road:init()
+    -- Comienzo con líneas sobre la ruta
+    -- TODO: Probar en netbooks y otros tamaños de pantalla
+    self.top = 10
+    self.bottom = love.graphics.getHeight() - 10
+    self.linesYPosition = (self.top + self.bottom) / 2 - 7.5
+
     listOfLines = {
         Line(love.graphics.getWidth() - 270),
         Line(love.graphics.getWidth() - 540),
@@ -18,7 +25,7 @@ function Road:update(dt)
         v:update(dt)
     end
 
-    timer(dt, 0.3)
+    self:linesGenerator(dt, 0.3)
 end
 
 function Road:draw()
@@ -29,19 +36,12 @@ function Road:draw()
     end
 end
 
-function createLine()
-    local line = Line()
+function Road:_createLineAt(x, y)
+    line = Line(x, self.linesYPosition)
+
     table.insert(listOfLines, line)
     if #listOfLines > 8 then
         table.remove(listOfLines, 1)
-    end
-end
-
-function timer(dt, secs)
-    countdownTime = countdownTime - dt
-    if countdownTime <= 0 then
-        createLine()
-        countdownTime = countdownTime + secs
     end
 end
 
@@ -52,7 +52,25 @@ function Road:enlarge(percentOfScreenHeight)
 end
 
 function Road:curveLeft(difficulty)
+    if difficulty == "easy" then
+        self.linesYPosition = self.linesYPosition - 10
+    elseif difficulty == "hard" then
+        self.linesYPosition = self.linesYPosition - 30
+    end
 end
 
 function Road:curveRight(difficulty)
+    if difficulty == "easy" then
+        self.linesYPosition = self.linesYPosition + 10
+    elseif difficulty == "hard" then
+        self.linesYPosition = self.linesYPosition + 30
+    end
+end
+
+function Road:linesGenerator(dt, secs, x, y)
+    countdownTime = countdownTime - dt
+    if countdownTime <= 0 then
+        self:_createLineAt(x, y)
+        countdownTime = countdownTime + secs
+    end
 end

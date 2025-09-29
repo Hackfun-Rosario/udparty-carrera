@@ -1,13 +1,17 @@
 Line = Class {}
 
-function Line:init(initXPosition)
+function Line:init(x, y)
     self.width = 90
     self.height = 15
-    self.y = (love.graphics.getHeight() / 2) - (self.height / 2)
-    if initXPosition then
-        self.x = initXPosition
+    if x then
+        self.x = x
     else
-        self.x = love.graphics.getWidth() + 10  -- Default: Apenas fuera de pantalla
+        self.x = love.graphics.getWidth() + 10 -- Default: Apenas fuera de pantalla
+    end
+    if y then
+        self.y = y
+    else
+        self.y = (love.graphics.getHeight() / 2) - (self.height / 2)
     end
     self.speed = 1000
 end
@@ -19,11 +23,6 @@ end
 function Line:draw()
     love.graphics.setColor(0.7, 0.7, 0.7)
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
-end
-
-function Line:setPosition(x, y)
-    self.x = x
-    self.y = y
 end
 
 function Line:setSpeed(newSpeed)
