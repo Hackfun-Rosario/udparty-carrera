@@ -4,7 +4,8 @@ local udp
 
 Class = require 'class'
 require "entities/car"
-require "entities/line"
+-- require "entities/road/line"
+require "entities/road/road"
 
 function love.load(filtered_args, args)
     -- love.window.setFullscreen(true)
@@ -35,7 +36,8 @@ function love.load(filtered_args, args)
         print("Escuchando...")
     end
     udp:settimeout(0) -- para que no bloquee el hilo principal
-    listOfLines = {}
+    -- listOfLines = {}
+    road = Road()
     car = Car()
 end
 
@@ -55,36 +57,38 @@ function love.update(dt)
     end
 
     car:update(dt, nil)
+    road:update(dt)
 
-    for k, v in pairs(listOfLines) do
-        v:update(dt)
-    end
+    -- for k, v in pairs(listOfLines) do
+    --     v:update(dt)
+    -- end
 
-    timer(dt, 0.3)
+    -- timer(dt, 0.3)
 end
 
-function createLine()
-    local line = Line()
-    table.insert(listOfLines, line)
-    if #listOfLines > 8 then
-        table.remove(listOfLines, 1)
-    end
-end
+-- function createLine()
+--     local line = Line()
+--     table.insert(listOfLines, line)
+--     if #listOfLines > 8 then
+--         table.remove(listOfLines, 1)
+--     end
+-- end
 
-countdownTime = 0
-function timer(dt, secs)
-    countdownTime = countdownTime - dt
-    if countdownTime <= 0 then
-        createLine()
-        countdownTime = countdownTime + secs
-    end
-end
+-- countdownTime = 0
+-- function timer(dt, secs)
+--     countdownTime = countdownTime - dt
+--     if countdownTime <= 0 then
+--         createLine()
+--         countdownTime = countdownTime + secs
+--     end
+-- end
 
 function love.draw()
     love.graphics.setBackgroundColor(0.13, 0.13, 0.13)
-    for k, v in pairs(listOfLines) do
-        v:draw()
-    end
+    -- for k, v in pairs(listOfLines) do
+    --     v:draw()
+    -- end
+    road:draw()
     car:draw()
 end
 
