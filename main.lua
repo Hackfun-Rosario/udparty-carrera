@@ -81,4 +81,12 @@ function love.keypressed(key, scancode, isrepeat)
     if key == "up" then
         road:curveLeft("easy")
     end
+
+    if key == "left" then
+        road:curveLeft("hard")
+    end
+
+    if key == "right" then
+        road:curveRight("hard")
+    end
 end

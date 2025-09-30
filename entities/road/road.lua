@@ -7,13 +7,14 @@ Road = Class {}
 
 -- TODO: Probar en netbooks y otros tamaños de pantalla
 local listOfLines = {
-    Line(love.graphics.getWidth() - 270),
-    Line(love.graphics.getWidth() - 540),
-    Line(love.graphics.getWidth() - 810),
-    Line(love.graphics.getWidth() - 1080),
+    Line(love.graphics.getWidth() - 50),
+    Line(love.graphics.getWidth() - 300),
+    Line(love.graphics.getWidth() - 550),
+    Line(love.graphics.getWidth() - 800),
+
 }
 local pavementSegments = {
-
+    Pavement(0, love.graphics.getHeight() / 2, love.graphics.getHeight() / 2, 1200)
 }
 
 function Road:init()
@@ -23,16 +24,15 @@ function Road:init()
 end
 
 function Road:update(dt)
+    for k, v in pairs(pavementSegments) do
+        v:update(dt)
+    end
     for k, v in pairs(listOfLines) do
         v:update(dt)
     end
 
-    for k, v in pairs(pavementSegments) do
-        v:update(dt)
-    end
-
-    self:pavementGenerator(dt, 0.3)
-    self:linesGenerator(dt, 0.25)
+    self:pavementGenerator(dt, 0.25)
+    self:linesGenerator(dt, 0.3)
 end
 
 function Road:draw()
@@ -60,7 +60,7 @@ function Road:_createPavementAt(x)
     pavement = Pavement(x, self.center)
 
     table.insert(pavementSegments, pavement)
-    if #pavementSegments > 8 then
+    if #pavementSegments > 12 then
         table.remove(pavementSegments, 1)
     end
 end

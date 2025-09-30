@@ -1,7 +1,12 @@
 Pavement = Class {}
 
-function Pavement:init(x, centerY, height)
-    self.width = 300
+function Pavement:init(x, centerY, height, width)
+    if width then
+        self.width = width
+    else
+        self.width = 300
+    end
+
     if height then
         self.height = height
     else
