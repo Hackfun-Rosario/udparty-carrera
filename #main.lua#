@@ -7,8 +7,8 @@ require "entities/car"
 require "entities/road/road"
 
 function love.load(filtered_args, args)
-    love.window.setFullscreen(true)
-    --love.window.setMode(1024, 600)
+    -- love.window.setFullscreen(true)
+    love.window.setMode(1024, 600)
     love.window.setVSync(-1)
     tick.framerate = 59
 
